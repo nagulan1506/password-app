@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Forgot Password</title>
+</head>
+<body>
+  <h1>Forgot Password</h1>
+  <% if (error) { %><p style="color:red;"><%= error %></p><% } %>
+  <% if (info) { %><p style="color:green;"><%= info %></p><% } %>
+  <form method="post" action="/forgot">
+    <label>Email<br/><input type="email" name="email" required /></label><br/><br/>
+    <button type="submit">Send Reset Link</button>
+  </form>
+  <p><a href="/login">Back to login</a></p>
+</body>
+</html>
