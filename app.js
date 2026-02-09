@@ -8,7 +8,7 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
-const ALLOWED_ORIGINS = [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'];
+const ALLOWED_ORIGINS = [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://password-app-adkb.onrender.com'];
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || ALLOWED_ORIGINS.includes(origin)) {
