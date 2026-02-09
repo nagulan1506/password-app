@@ -23,7 +23,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo').default || require('connect-mongo');
 
 app.use(
   session({
