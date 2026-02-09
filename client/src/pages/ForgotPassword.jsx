@@ -25,7 +25,7 @@ export default function ForgotPassword() {
             if (!res.ok) throw new Error(data.error || 'Failed to send reset email');
             setMessage('Check your inbox for further instructions');
         } catch (err) {
-            setError(err.message);
+            setError(`${err.message} (Target: ${API_URL})`);
         }
         setLoading(false);
     };
