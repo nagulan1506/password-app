@@ -45,9 +45,20 @@ connectMongo(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/password_app'
     console.error('Failed to connect to MongoDB', err);
   });
 
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not Found' });
+const path = require('path');
+
+// Serve static files from the client/dist directory
+app.use(express.static(path.join(__dirname, 'client/dist')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
 });
+
+// app.use((req, res) => {
+//   res.status(404).json({ error: 'Not Found' });
+// });
+
 
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
