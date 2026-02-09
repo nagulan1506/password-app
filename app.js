@@ -9,13 +9,25 @@ const authRoutes = require('./routes/auth');
 const app = express();
 
 const ALLOWED_ORIGINS = [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://password-app-adkb.onrender.com'];
+
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || ALLOWED_ORIGINS.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+
+    // Allow any Netlify subdomain
+    if (origin.match(/^https:\/\/.*\.netlify\.app$/)) return callback(null, true);
+
+    // Allow any Render subdomain (if needed for self-calls)
+    if (origin.match(/^https:\/\/.*\.onrender\.com$/)) return callback(null, true);
+
+    // Allow local network IPs
+    if (origin.match(/^http:\/\/192\.168\.\d{1,3}\.\d{1,3}(:\d+)?$/)) return callback(null, true);
+
+    console.log('Blocked by CORS:', origin); // Log blocked origins for debugging
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true
 }));
