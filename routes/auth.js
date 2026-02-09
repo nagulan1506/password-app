@@ -117,7 +117,7 @@ router.post('/forgot', async (req, res) => {
     res.json({ ok: true, preview });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to send reset email' });
+    res.status(500).json({ error: `Failed to send reset email: ${err.message}` });
   }
 });
 
