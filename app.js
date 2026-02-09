@@ -23,12 +23,22 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const MongoStore = require('connect-mongo');
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'change_this_secret',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24, sameSite: 'none', secure: false }
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/password_app',
+      ttl: 24 * 60 * 60 // 1 day
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // Must be 'none' for cross-site cookie if frontend/backend are on different domains (Netlify vs Render)
+      secure: process.env.NODE_ENV === 'production' // Must be true for sameSite: 'none'
+    }
   })
 );
 
